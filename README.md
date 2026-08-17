@@ -10,27 +10,29 @@ Not on npm yet. The built `lib/` is committed, so it installs straight from
 GitHub — no download, no build step:
 
 ```sh
-# From the standalone repo (recommended)
 dsh plugin --profile web add github:ghbhiee/dsh-plugin-mobile-shell
-
-# ...or from the monorepo
-dsh plugin --profile web add "github:ghbhiee/dsh-plugins#path:packages/mobile-shell"
 ```
 
-Or from a [release](https://github.com/ghbhiee/dsh-plugins/releases) tarball
-(download it first — passing the URL to `dsh plugin add` trips a pnpm integrity
-check) or a local clone:
+Or from a local clone (a `link:`, so a local rebuild is picked up):
 
 ```sh
-# From a release tarball
-curl -LO https://github.com/ghbhiee/dsh-plugins/releases/download/v0.1.0/dsh-plugin-mobile-shell-0.1.0.tgz
-dsh plugin --profile web add ./dsh-plugin-mobile-shell-0.1.0.tgz
-
-# ...or from a clone
-dsh plugin --profile web add ./packages/mobile-shell
+git clone https://github.com/ghbhiee/dsh-plugin-mobile-shell.git
+dsh plugin --profile web add ./dsh-plugin-mobile-shell
 ```
 
-Browser-only: the host half is an empty plugin whose sole job is to make the package visible to the Loader, which is how its `dsh.client` half gets served.
+Sibling plugins install the same way: [dsh-plugin-workbench](https://github.com/ghbhiee/dsh-plugin-workbench),
+[dsh-plugin-mobile-shell](https://github.com/ghbhiee/dsh-plugin-mobile-shell),
+[dsh-plugin-cli-session](https://github.com/ghbhiee/dsh-plugin-cli-session).
+
+## Develop
+
+```sh
+pnpm install
+pnpm run check   # typecheck → vitest → tsdown build
+```
+
+Because `lib/` is versioned (it is what a git install serves), rebuild and
+commit it with every source change.
 
 ## Configure
 

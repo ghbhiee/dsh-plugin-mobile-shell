@@ -1,4 +1,4 @@
-import { pluginBundle } from '../../scripts/tsdown-preset.ts'
+import { pluginBundle } from './scripts/tsdown-preset.ts'
 
 export default pluginBundle('dsh-plugin-mobile-shell', {
   host: ['src/index.ts'],

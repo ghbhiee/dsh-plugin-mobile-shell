@@ -1,0 +1,6 @@
+node_modules/
+*.tgz
+.DS_Store
+# lib/*.js is committed (git installs serve it); maps and caches are not.
+*.map
+tsconfig.tsbuildinfo
