@@ -6,12 +6,11 @@
   "author": "guohongbo@outlook.com",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ghbhiee/dsh-plugins.git",
-    "directory": "packages/mobile-shell"
+    "url": "git+https://github.com/ghbhiee/dsh-plugin-mobile-shell.git"
   },
-  "homepage": "https://github.com/ghbhiee/dsh-plugins/tree/main/packages/mobile-shell#readme",
+  "homepage": "https://github.com/ghbhiee/dsh-plugin-mobile-shell#readme",
   "bugs": {
-    "url": "https://github.com/ghbhiee/dsh-plugins/issues"
+    "url": "https://github.com/ghbhiee/dsh-plugin-mobile-shell/issues"
   },
   "type": "module",
   "main": "lib/index.js",
