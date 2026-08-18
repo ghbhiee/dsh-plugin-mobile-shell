@@ -5,6 +5,26 @@ Continuation brief for a fresh session working on this repo. Read this, then
 only, NOT in git) and `~/dsh/OPS-dsh.md` (install/restart runbook). Public
 repo: keep secrets out.
 
+
+## Working agreement — git is the source of truth
+
+This repo is edited from more than one place: a parked continuation session for
+this repo, and whichever session the user happens to be in. That drifted once —
+the same repo had uncommitted work in one place while another session was
+building on top of it — so:
+
+**Commit and push as soon as a change is finished. Do not leave finished work
+sitting uncommitted, and never assume the working tree is what git has.**
+
+Before starting anything: `git pull` (or at minimum `git status && git log --oneline -3`).
+Whatever is on `main` is what everyone else — and every `github:` install —
+sees. `lib/` is committed here, so it must be rebuilt and committed with the
+source in the same commit, or a git install serves stale code.
+
+The bundle is byte-reproducible (the preset sorts lightningcss's CSS Modules
+export map), so a `lib/` diff always means a real change — treat an unexpected
+one as a signal, not noise.
+
 ## What this is
 
 Narrow-viewport shell affordances for the DeepSeek Harness web UI, as an
