@@ -20,9 +20,8 @@ git clone https://github.com/ghbhiee/dsh-plugin-mobile-shell.git
 dsh plugin --profile web add ./dsh-plugin-mobile-shell
 ```
 
-Sibling plugins install the same way: [dsh-plugin-workbench](https://github.com/ghbhiee/dsh-plugin-workbench),
-[dsh-plugin-mobile-shell](https://github.com/ghbhiee/dsh-plugin-mobile-shell),
-[dsh-plugin-cli-session](https://github.com/ghbhiee/dsh-plugin-cli-session).
+Sibling plugins install the same way: [dsh-plugin-workbench](https://github.com/ghbhiee/dsh-plugin-workbench)
+and [dsh-plugin-cli-session](https://github.com/ghbhiee/dsh-plugin-cli-session).
 
 ## Develop
 
@@ -32,7 +31,10 @@ pnpm run check   # typecheck → vitest → tsdown build
 ```
 
 Because `lib/` is versioned (it is what a git install serves), rebuild and
-commit it with every source change.
+commit it with every source change. The build is byte-reproducible for
+unchanged sources within one checkout, so a diff under `lib/` always means a
+real change — note that CSS-Module hashes derive from the build path, so build
+it from this clone rather than a worktree.
 
 ## Configure
 
@@ -73,7 +75,7 @@ Two things worth knowing if you extend this:
 
 ## Tests
 
-`pnpm test` covers the two contracts that broke during development — the absent-when-open attribute and frame-measured narrowness — plus the drawer controls, leaf-vs-group closing, and swipe direction. Reverting either historical bug turns 7 of the 17 red, so the net demonstrably holds.
+`pnpm test` (26 tests) covers the two contracts that broke during development — the absent-when-open attribute and frame-measured narrowness — plus the drawer controls, leaf-vs-group closing, swipe direction, and the reproducibility of the client bundle. The net is measured, not assumed: reverting the absent-when-open fix turns 6 red, reverting frame measurement turns 10, and un-sorting the CSS class map turns 2.
 
 ## Known limitations
 

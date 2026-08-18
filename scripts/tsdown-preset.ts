@@ -94,8 +94,15 @@ function cssModulesPlugin(id: string) {
         // browsers this UI is expected to reach. Encoded as major<<16.
         targets: { safari: 15 << 16, chrome: 100 << 16, firefox: 100 << 16 },
       })
+      // Sorted, because lightningcss hands the export map back from a Rust
+      // HashMap whose iteration order is randomized per process: emitting it
+      // as-is makes `lib/client.js` differ between two builds of identical
+      // sources, and `lib/` is committed — every rebuild produced a phantom
+      // diff, which is exactly the noise that hides a real one.
       const classMap: Record<string, string> = {}
-      for (const [local, exported] of Object.entries(cssExports ?? {})) classMap[local] = exported.name
+      const byLocalName = Object.entries(cssExports ?? {})
+        .sort(([a], [b]) => (a < b ? -1 : a > b ? 1 : 0))
+      for (const [local, exported] of byLocalName) classMap[local] = exported.name
       const tagId = `${id}/${basename(fileId)}`
       return [
         `const css = ${JSON.stringify(code.toString())};`,

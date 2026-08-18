@@ -40,15 +40,32 @@ the old `dsh-plugins` monorepo). Siblings: `dsh-plugin-workbench`,
 - **lib/ is committed** (bare `github:ghbhiee/dsh-plugin-mobile-shell`
   installs serve it): rebuild + commit lib/ on every change, built from THIS
   repo's checkout.
+- The client bundle is **byte-reproducible** within a checkout, so a `lib/`
+  diff always means a real change. It was not: lightningcss returns the CSS
+  Modules export map from a Rust HashMap with per-process iteration order, so
+  the class map came out in either order and every other rebuild produced a
+  phantom diff. `scripts/tsdown-preset.ts` sorts it now, guarded by
+  `tests/build-preset.spec.ts`. **The sibling repos carry their own copy of
+  the preset and still have the unsorted version** — workbench has several
+  CSS modules, so it churns more.
 
 ## Build / verify loop
 
 ```sh
 pnpm install
-pnpm run check      # typecheck → vitest (23 tests) → tsdown build
+pnpm run check      # typecheck → vitest (26 tests) → tsdown build
 ```
 
 Local deployment (this Mac): the dsh `web` profile links to this clone, so
 `pnpm run build && launchctl kickstart -k gui/$(id -u)/com.tokencv.dsh-web`,
 then verify at http://127.0.0.1:3080 with a narrow viewport (hamburger +
 drawer). CI = `pnpm install --frozen-lockfile && pnpm run check`.
+
+**Verifying narrow ⇄ wide in an automated browser**: a viewport resize looks
+like it does nothing while the browser pane is not rendering — `ResizeObserver`
+callbacks and `resize` events are withheld until the page paints again, so the
+plugin sits on its last decision (which is the intended behaviour, the same one
+`clientWidth === 0` protects, but it reads exactly like the detection being
+broken). Force a paint (take a screenshot) or dispatch a `resize` event before
+asserting anything about the transition; measuring `clientWidth` alone does not
+un-freeze it, because a property read forces layout without a frame.
